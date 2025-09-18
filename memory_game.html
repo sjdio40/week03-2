@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED 기억력 게임 프로젝트</title>
+    <style>
+        /* 기본 폰트 및 배경 설정 */
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* 슬라이드 컨테이너 스타일 */
+        .slide {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 1000px;
+            height: 600px;
+            margin: 25px auto;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 슬라이드 페이지 번호 */
+        .slide-counter {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        /* 제목 페이지 스타일 */
+        .title-page {
+            text-align: center;
+            background: linear-gradient(135deg, #4a90e2, #50e3c2);
+            color: white;
+        }
+
+        .title-page h1 {
+            font-size: 52px;
+            margin-bottom: 10px;
+        }
+
+        .title-page h3 {
+            font-size: 24px;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+        .title-page .presenter-info {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+        }
+
+        /* 공통 제목 스타일 */
+        h1, h2, h3, h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            font-size: 36px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4a90e2;
+            margin-bottom: 30px;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #34495e;
+            margin-top: 25px;
+        }
+        
+        /* 본문 내용 스타일 */
+        p, li {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        ul, ol {
+            padding-left: 30px;
+        }
+
+        /* 이미지 플레이스홀더 스타일 */
+        .image-placeholder {
+            width: 80%;
+            height: 150px;
+            background-color: #e9ecef;
+            border: 2px dashed #ced4da;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            font-size: 16px;
+            color: #888;
+        }
+        
+        /* 코드 블록 스타일 (플로우차트용) */
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'D2Coding', 'Consolas', monospace;
+            font-size: 15px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            text-align: center;
+        }
+
+        /* 마지막 슬라이드 Q&A 스타일 */
+        .final-qna {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 50px;
+            color: #4a90e2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide title-page">
+        <h3>💡 아두이노를 활용한 인터랙티브 프로젝트</h3>
+        <h1>LED 기억력 게임: Simon Says</h1>
+        <div class="presenter-info">
+            <p>2025. 09. 18.</p>
+            <p>발표자: OOO</p>
+        </div>
+        <div class="slide-counter">1 / 5</div>
+    </div>
+
+    <div class="slide">
+        <h2>🚀 프로젝트 개요</h2>
+        <p><strong>"아두이노가 내는 순서를 기억하고 따라 해보세요!"</strong></p>
+        
+        <h4>목표</h4>
+        <p>아두이노의 기본 디지털 입출력(I/O) 제어를 이해하고, 이를 활용하여 <strong>누구나 즐길 수 있는 인터랙티브 게임</strong>을 제작하는 것을 목표로 합니다.</p>
+        
+        <h4>게임 규칙</h4>
+        <ol>
+            <li><strong>시작:</strong> 아무 버튼이나 눌러 게임을 시작합니다.</li>
+            <li><strong>기억:</strong> 5개의 LED가 무작위 순서로 깜빡입니다. 이 순서를 잘 기억합니다.</li>
+            <li><strong>입력:</strong> 기억한 순서대로 LED에 해당하는 버튼을 누릅니다.</li>
+            <li><strong>성공/실패:</strong> 순서를 모두 맞히면 <strong>성공 멜로디</strong>가, 틀리면 <strong>실패 효과음</strong>이 나옵니다.</li>
+        </ol>
+        <div class="slide-counter">2 / 5</div>
+    </div>
+
+    <div class="slide">
+        <h2>🛠️ 사용된 부품 및 회로도</h2>
+        
+        <h4>핵심 부품 리스트</h4>
+        <ul>
+            <li><strong>제어 장치:</strong> 아두이노 Uno R3</li>
+            <li><strong>출력 장치:</strong> LED 5개, 수동 부저 1개</li>
+            <li><strong>입력 장치:</strong> 푸시 버튼 5개</li>
+            <li><strong>기타:</strong> 브레드보드, 점퍼 와이어, 220Ω 저항 5개</li>
+        </ul>
+
+        <h4>회로 구성</h4>
+        <p>
+            버튼 연결 시, 아두이노의 <strong>내부 풀업(Pull-up) 저항</strong>을 사용하여 별도의 저항 없이 회로를 간소화했습니다. LED는 2~6번, 버튼은 8~12번, 부저는 7번 핀에 연결합니다.
+        </p>
+        <div class="image-placeholder"></div>
+        <div class="slide-counter">3 / 5</div>
+    </div>
+
+    <div class="slide">
+        <h2>💻 코드 핵심 로직 (Flowchart)</h2>
+        <p>프로그램은 <strong>`생성` → `출력` → `입력` → `판단`</strong> 의 명확한 흐름을 가집니다.</p>
+        
+        <pre>
+[게임 시작]
+      ↓
+[무작위 순서 생성]
+      ↓
+[LED로 순서 출력]
+      ↓
+[사용자 버튼 입력 대기]
+      ↓
+[입력 순서 확인] ─── (틀림) ───▶ [실패 효과음]
+      │
+ (맞음, 진행중)
+      ↓
+[5개 모두 성공] ───▶ [성공 멜로디]
+        </pre>
+
+        <h4>주요 함수</h4>
+        <ul>
+            <li><code>generateSequence()</code>: 게임의 정답 순서를 만듭니다.</li>
+            <li><code>displaySequence()</code>: 생성된 순서를 LED 불빛으로 보여줍니다.</li>
+            <li><code>readButtons()</code>: 버튼 중복 입력을 방지(디바운싱)하며 입력을 감지합니다.</li>
+            <li><code>playSuccessMelody()</code>: 성공 시 축하 노래를 재생합니다.</li>
+        </ul>
+        <div class="slide-counter">4 / 5</div>
+    </div>
+
+    <div class="slide">
+        <h2>🎉 완성 및 발전 방향</h2>
+        
+        <h4>프로젝트 결과</h4>
+        <p>LED와 버튼을 이용한 기억력 게임이 <strong>정상적으로 작동</strong>하며, 성공 및 실패에 대한 명확한 <strong>시청각적 피드백(LED, 부저)</strong>을 구현했습니다.</p>
+        
+        <h4>어려웠던 점 및 해결</h4>
+        <p><strong>문제:</strong> 버튼을 한 번 눌러도 여러 번 입력되는 '채터링' 현상 발생<br>
+        <strong>해결:</strong> 간단한 <strong>디바운싱(Debouncing)</strong> 로직을 추가하여 안정적인 입력을 구현했습니다.</p>
+        
+        <h4>향후 발전 방향</h4>
+        <ul>
+            <li><strong>난이도 조절:</strong> 성공 시 순서가 1개씩 늘어나는 '단계별 모드' 추가</li>
+            <li><strong>점수 시스템:</strong> 7세그먼트나 LCD를 추가하여 현재 점수 표시</li>
+            <li><strong>타임 어택 모드:</strong> 입력 시간제한을 두어 긴장감 부여</li>
+        </ul>
+        <p class="final-qna">감사합니다. Q&A</p>
+        <div class="slide-counter">5 / 5</div>
+    </div>
+
+</body>
+</html>
